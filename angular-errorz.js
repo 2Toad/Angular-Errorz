@@ -3,7 +3,7 @@
  * Copyright (C)2014 2Toad, LLC.
  * http://2toad.github.io/Angular-Errorz
  * 
- * Version: 1.0.0
+ * Version: 1.0.1
  * License: MIT
  */
 
@@ -12,7 +12,7 @@
 
     angular.module("ttErrorz", [])
 
-    .factory("errorz", ["$rootScope", function ($rootScope) {
+    .factory("errorz", [function () {
         var self = {
             handlers: {},
             addHandler: function(errorCode, handler) {
