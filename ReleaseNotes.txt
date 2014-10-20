@@ -1,3 +1,9 @@
+Release 1.0.1
+====================
+Fixes
+* Removed unused service reference to $rootScope
+
+
 Release 1.0.0
 ====================
 Initial release
