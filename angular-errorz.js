@@ -2,7 +2,7 @@
  * Angular-Errorz
  * Copyright (C)2014 2Toad, LLC.
  * http://2toad.github.io/Angular-Errorz
- * 
+ *
  * Version: 1.0.1
  * License: MIT
  */
@@ -24,8 +24,12 @@
             handledErrorCodes: function () {
                 return Object.keys(self.handlers);
             },
-            init: function (handlers) {
-                angular.extend(self.handlers, handlers);
+            init: function (handlers, callback) {
+                if (callback) {
+                    angular.forEach(handlers, function (handler) {
+                        self.handlers[handler] = callback;
+                    });
+                } else angular.extend(self.handlers, handlers);
             },
             onError: function(rejection) {
                 var handler = self.handlers[rejection.status];
