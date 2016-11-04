@@ -13,53 +13,65 @@
     angular.module("ttErrorz", [])
 
     .factory("errorz", [function () {
-        var self = {
+        var service = {
             handlers: {},
-            flooder: {},
-            addHandler: function(errorCode, handler) {
-                self.handlers[errorCode] = handler;
-            },
-            handled: function(errorCode) {
-              return self.handlers[errorCode] !== undefined;
-            },
-            handledErrorCodes: function () {
-                return Object.keys(self.handlers);
-            },
-            init: function (handlers, callback, floodThreshold) {
-                self.flooder.threshold = floodThreshold;
-
-                if (callback) {
-                    angular.forEach(handlers, function (handler) {
-                        self.handlers[handler] = callback;
-                    });
-                } else angular.extend(self.handlers, handlers);
-            },
-            onError: function(rejection) {
-                if (!flooded(rejection.status)) {
-                    var handler = self.handlers[rejection.status];
-                    if (handler !== undefined) {
-                        var r = handler(rejection);
-                        if (r) rejection = r;
-                    }
-                }
-                return rejection;
-            }
+            flooder: {}
         };
 
-        return self;
+        return angular.extend(service, {
+            init,
+            addHandler,
+            handled,
+            handledErrorCodes,
+            onError
+        });
 
-        function flooded(status) {
-            var now = Date.now();
+        function init(handlers, callback, floodThreshold) {
+            service.flooder.threshold = floodThreshold;
 
-            if (self.flooder.threshold && self.flooder.status === status && self.flooder.timeout >= now) {
-                console.info("Angular-Errors: flooded status=" + status + " timeout=" + (self.flooder.timeout - now) + "ms");
-                return true;
+            if (callback) {
+                angular.forEach(handlers, function (handler) {
+                    service.handlers[handler] = callback;
+                });
+            } else angular.extend(service.handlers, handlers);
+        }
+
+        function addHandler(errorCode, handler) {
+            service.handlers[errorCode] = handler;
+        }
+
+        function handled(errorCode) {
+            return service.handlers[errorCode] !== undefined;
+        }
+
+        function handledErrorCodes() {
+            return Object.keys(service.handlers);
+        }
+
+        function onError(rejection) {
+            if (!flooded(rejection.status)) {
+                var handler = service.handlers[rejection.status];
+                if (handler !== undefined) {
+                    var r = handler(rejection);
+                    if (r) rejection = r;
+                }
             }
 
-            self.flooder.status = status;
-            self.flooder.timeout = now + self.flooder.threshold;
+            return rejection;
 
-            return false;
+            function flooded(status) {
+                var now = Date.now();
+
+                if (service.flooder.threshold && service.flooder.status === status && service.flooder.timeout >= now) {
+                    console.info("Angular-Errors: flooded status=" + status + " timeout=" + (service.flooder.timeout - now) + "ms");
+                    return true;
+                }
+
+                service.flooder.status = status;
+                service.flooder.timeout = now + service.flooder.threshold;
+
+                return false;
+            }
         }
     }])
 
