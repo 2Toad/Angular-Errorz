@@ -34,7 +34,7 @@ Configure the service within your app module's run block:
 
 ```js
 exampleApp.run(["errorz", function (errorz) {
-    errorz.config({/*see examples*/});
+    errorz.addHandler(/* see Examples */);
 }]);
 ```
 
@@ -113,8 +113,8 @@ errorz.addBatch([-1, 0, 500], function (rejection) {
 You can do the same thing with multiple calls to `addHandler` instead of `addBatch`. Impractical, for this use case, but here it is for demonstrative purposes:
 ```js
 errorz.addHandler(-1, handler)
-	.addHandler(0, handler)
-	.addHandler(500, handler);
+    .addHandler(0, handler)
+    .addHandler(500, handler);
 
 var handler = function (rejection) {
     console.error("Please try again.", "Server Error " + rejection.status);
@@ -143,7 +143,7 @@ errorz.addBatch([-1, 0, 500], function (rejection) {
 Then, elsewhere/elsewhile...
 ```js
 errorz.addHandler(404, function(rejection) {
-	console.warn(rejection.config.url, "404 Not Found");
+    console.warn(rejection.config.url, "404 Not Found");
 });
 ```
 
