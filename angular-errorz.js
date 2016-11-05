@@ -3,7 +3,7 @@
  * Copyright (C)2014 2Toad, LLC.
  * http://2toad.github.io/Angular-Errorz
  *
- * Version: 1.2.0
+ * Version: 2.0.0
  * License: MIT
  */
 
@@ -15,40 +15,40 @@
     .factory("errorz", [function () {
         var service = {
             handlers: {},
-            flooder: {}
+            floodControl: {
+              threshold: 1000
+            }
         };
 
         return angular.extend(service, {
-            init,
             addHandler,
+            addBatch,
             handled,
-            handledErrorCodes,
-            onError
+            statusCodes,
+            handle
         });
 
-        function init(handlers, callback, floodThreshold) {
-            service.flooder.threshold = floodThreshold;
-
-            if (callback) {
-                angular.forEach(handlers, function (handler) {
-                    service.handlers[handler] = callback;
-                });
-            } else angular.extend(service.handlers, handlers);
+        function addHandler(status, handler) {
+            service.handlers[status] = handler;
+            return service;
         }
 
-        function addHandler(errorCode, handler) {
-            service.handlers[errorCode] = handler;
+        function addBatch(statuses, handler) {
+            angular.forEach(statuses, function (status) {
+                addHandler(status, handler);
+            });
+            return service;
         }
 
-        function handled(errorCode) {
-            return service.handlers[errorCode] !== undefined;
+        function handled(status) {
+            return service.handlers[status] !== undefined;
         }
 
-        function handledErrorCodes() {
+        function statusCodes() {
             return Object.keys(service.handlers);
         }
 
-        function onError(rejection) {
+        function handle(rejection) {
             if (!flooded(rejection.status)) {
                 var handler = service.handlers[rejection.status];
                 if (handler !== undefined) {
@@ -62,13 +62,16 @@
             function flooded(status) {
                 var now = Date.now();
 
-                if (service.flooder.threshold && service.flooder.status === status && service.flooder.timeout >= now) {
-                    console.info("Angular-Errors: flooded status=" + status + " timeout=" + (service.flooder.timeout - now) + "ms");
+                if (service.floodControl.threshold
+                  && service.floodControl.status === status
+                  && service.floodControl.timeout >= now) {
+                    console.info("Angular-Errors: Flood Control: status=" + status +
+                          " timeout=" + (service.floodControl.timeout - now) + "ms");
                     return true;
                 }
 
-                service.flooder.status = status;
-                service.flooder.timeout = now + service.flooder.threshold;
+                service.floodControl.status = status;
+                service.floodControl.timeout = now + service.floodControl.threshold;
 
                 return false;
             }
@@ -78,7 +81,7 @@
     .factory("errorz.interceptor", ["$q", "errorz", function ($q, errorz) {
         return {
             responseError: function (rejection) {
-                rejection = errorz.onError(rejection);
+                rejection = errorz.handle(rejection);
                 return $q.reject(rejection);
             }
         };
