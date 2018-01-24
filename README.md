@@ -14,13 +14,11 @@ An error handling service for AngularJS
 
 ## Quick Start
 
-> AngularJS ~1.2.13 is required
+> AngularJS ~1.2 is required
 
 ### Installation
 
-Install with Bower:
-
-`bower install angular-errorz`
+`npm install angular-errorz`
 
 #### Add module reference
 

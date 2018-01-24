@@ -1,0 +1,25 @@
+{
+  "name": "angular-errorz",
+  "version": "2.0.0",
+  "description": "An error handling service for AngularJS",
+  "main": "angular-errorz.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2Toad/Angular-Errorz.git"
+  },
+  "keywords": [
+    "angular",
+    "error handling"
+  ],
+  "author": "2Toad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/2Toad/Angular-Errorz/issues"
+  },
+  "homepage": "https://github.com/2Toad/Angular-Errorz#readme",
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-cookies": "1.2.x",
+    "angular-route": "1.2.x"
+  }
+}
