@@ -10,6 +10,6 @@ angular-route@1.2.x:
   version "1.2.32"
   resolved "https://registry.yarnpkg.com/angular-route/-/angular-route-1.2.32.tgz#90ae8f8bd1b283cb76fab1c7fcb7d655066a955f"
 
-angular@1.2.x:
-  version "1.2.32"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.2.32.tgz#df52625a5167919931418dda3a9208b9f5fa3db4"
+angular@1.8.x:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.8.0.tgz#b1ec179887869215cab6dfd0df2e42caa65b1b51"

@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/2Toad/Angular-Errorz#readme",
   "dependencies": {
-    "angular": "1.2.x",
+    "angular": "1.8.x",
     "angular-cookies": "1.2.x",
     "angular-route": "1.2.x"
   }
